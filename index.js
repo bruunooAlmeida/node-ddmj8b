@@ -16,35 +16,17 @@
  * @returns inteiro informando a quantidade de variações possíveis para representar o valor com as moedas
  */
 function variacoes(valor, moedas) {
-  let resultado = 0;
-
-  for (let contador = 0; contador < moedas.length; contador++) {
-    const valorMoeda = moedas[contador];
-
-    //Criando array com o tamanho do numero
-    const Matrix = Array(n + 1)
-      .fill(null)
-      .map(() => {
-        return Array(n + 1).fill(0);
-      });
-
-    for (let index = 1; index <= n; index++) {
-      // console.log(index);
-      Matrix[1][index] = 1;
+  let particaoInteiros = Array(valor + 1).fill(0);
+  // console.log(particaoInteiros);
+  particaoInteiros[0] = 1;
+  // console.log(particaoInteiros,moedas.length);
+  for (let i = 0; i < moedas.length; i++) {
+    for (let j = moedas[i]; j <= valor; j++) {
+      particaoInteiros[j] += particaoInteiros[j - moedas[i]];
     }
-
-    for (let index = 1; index <= valorMoeda; index += 1) {
-      Matrix[index][1] = 1;
-    }
-
-    for (let k = 2; k <= valorMoeda; k++) {
-      for (let j = 2; j <= n; j++) {
-        Matrix[k][j] = Matrix[k - 1][j] + Matrix[k][j - k];
-      }
-    }
-    resultado += Matrix[valorMoeda][n];
   }
-  return resultado;
+  // console.log(particaoInteiros);
+  return particaoInteiros[valor];
 }
 
 module.exports = variacoes;
